@@ -67,3 +67,36 @@ SELECT
   ROUND(AVG(DATE_DIFF(DATE(date_first_payment),
         DATE(date_reg), DAY)), 2) AS avg_days_to_payment
 FROM `hw-skelar.ab
+
+-- --------------------------------------------
+-- 5. TABLEAU EXPORT — всі метрики в одній таблиці
+-- --------------------------------------------
+SELECT
+  'baseline' AS group_id,
+  5.45 AS conversion_rate,
+  37.2636 AS spent_15_rate,
+  16.5 AS avg_days_to_payment
+
+UNION ALL
+
+SELECT
+  'control' AS group_id,
+  ROUND(COUNT(date_first_payment) * 100.0 / COUNT(*), 4),
+  ROUND(COUNT(date_spent_15_credits) * 100.0 / COUNT(*), 4),
+  ROUND(AVG(DATE_DIFF(DATE(date_first_payment),
+        DATE(date_reg), DAY)), 2)
+FROM `hw-skelar.ab_test.ab_test_task_data`
+WHERE match = 0
+AND date_reminder IS NULL
+
+UNION ALL
+
+SELECT
+  'test' AS group_id,
+  ROUND(COUNT(date_first_payment) * 100.0 / COUNT(*), 4),
+  ROUND(COUNT(date_spent_15_credits) * 100.0 / COUNT(*), 4),
+  ROUND(AVG(DATE_DIFF(DATE(date_first_payment),
+        DATE(date_reg), DAY)), 2)
+FROM `hw-skelar.ab_test.ab_test_task_data`
+WHERE match = 1
+
