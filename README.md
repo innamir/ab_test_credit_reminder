@@ -108,3 +108,10 @@ p-value = 0.0034 підтверджує що ефект
 | docs/eda_analysis.md | EDA аналіз |
 | docs/sample_size.md | Планування тесту |
 | docs/results.md | Результати та висновки |
+
+## 🔗 Посилання
+
+| Ресурс | Посилання |
+|---|---|
+| Tableau Dashboard | [A/B Test Results](https://public.tableau.com/views/ABTestCreditReminderResults/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link) |
+
