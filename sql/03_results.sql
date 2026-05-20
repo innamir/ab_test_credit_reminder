@@ -24,7 +24,21 @@ ORDER BY match;
 -- Різниця: +6.37% ✅
 
 -- --------------------------------------------
--- 2. HEALTH METRIC — Витрата 15 кредитів
+-- 2. HEALTH METRIC BASELINE — історичні дані
+-- Базові значення до запуску тесту
+-- --------------------------------------------
+SELECT
+  ROUND(COUNT(date_spent_15_credits) * 100.0 / COUNT(*), 4) AS spent_15_rate,
+  ROUND(AVG(DATE_DIFF(DATE(date_first_payment),
+        DATE(date_reg), DAY)), 2) AS avg_days_to_payment
+FROM `hw-skelar.ab_test.ab_test_task_historical_data`;
+
+-- Result:
+-- spent_15_rate: 37.26%
+-- avg_days_to_payment: 16.5 днів
+
+-- --------------------------------------------
+-- 3. HEALTH METRIC — Витрата 15 кредитів
 -- Перевіряємо чи не прискорило нагадування
 -- витрату кредитів замість оплати
 -- --------------------------------------------
@@ -44,7 +58,7 @@ ORDER BY match;
 -- Різниця: +0.24% ✅ норма
 
 -- --------------------------------------------
--- 3. HEALTH METRIC — Час до першої оплати
+-- 4. HEALTH METRIC — Час до першої оплати
 -- Перевіряємо чи прискорює нагадування
 -- прийняття рішення про оплату
 -- --------------------------------------------
@@ -52,13 +66,4 @@ SELECT
   match AS group_id,
   ROUND(AVG(DATE_DIFF(DATE(date_first_payment),
         DATE(date_reg), DAY)), 2) AS avg_days_to_payment
-FROM `hw-skelar.ab_test.ab_test_task_data`
-WHERE date_first_payment IS NOT NULL
-AND NOT (match = 0 AND date_reminder IS NOT NULL)
-GROUP BY match
-ORDER BY match;
-
--- Result:
--- Група 0: 14.29 днів
--- Група 1: 13.52 днів
--- Різниця: -0.77 дні ✅ краще
+FROM `hw-skelar.ab
